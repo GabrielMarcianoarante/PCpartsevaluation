@@ -5,7 +5,6 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 // middleware simples de autenticação do admin
-// em produção usaria JWT, mas pra apresentação uma senha fixa resolve
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin123'
 
 function autenticarAdmin(req, res, next) {
