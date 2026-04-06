@@ -3,165 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PC Parts — Avaliações</title>
+  <title>PartRank — Avaliações de Hardware</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="noise"></div>
   <header>
-    <div class="logo">PC<span>Parts</span></div>
+    <a class="wordmark" href="#">PART<span>RANK</span></a>
     <nav>
       <button class="nav-btn active" data-view="catalogo">Catálogo</button>
       <button class="nav-btn" data-view="avaliar">Avaliar</button>
-      <button class="nav-btn" data-view="submeter">Submeter peça</button>
+      <button class="nav-btn" data-view="submeter">Submeter</button>
       <button class="nav-btn" data-view="admin">Admin</button>
     </nav>
   </header>
-
   <div id="toast" class="toast"></div>
-
   <main>
-    <!-- catálogo -->
     <section id="view-catalogo" class="view active">
-      <div class="view-header">
+      <div class="page-title">
         <h1>Catálogo</h1>
-        <p class="sub">peças aprovadas e avaliadas pela comunidade</p>
+        <span class="title-line"></span>
+        <p>peças avaliadas pela comunidade</p>
       </div>
-      <div id="catalogo-grid" class="parts-grid"></div>
+      <div id="catalogo-grid" class="grid"></div>
     </section>
-
-    <!-- avaliar -->
     <section id="view-avaliar" class="view">
-      <div class="view-header">
-        <h1>Avaliar peça</h1>
-        <p class="sub">sua avaliação atualiza a média em tempo real</p>
+      <div class="page-title">
+        <h1>Avaliar</h1>
+        <span class="title-line"></span>
+        <p>sua nota atualiza a média em tempo real</p>
       </div>
-      <div class="form-card">
-        <div class="form-group">
-          <label>Selecionar peça</label>
-          <select id="select-peca">
-            <option value="">— escolha uma peça —</option>
-          </select>
+      <div class="form-wrap">
+        <div class="field">
+          <label>Peça</label>
+          <select id="select-peca"><option value="">— selecione —</option></select>
         </div>
-
-        <div id="form-avaliar" style="display:none">
-          <div class="form-group">
+        <div id="form-avaliar" class="hidden">
+          <div class="field">
             <label>Seu nome</label>
-            <input type="text" id="av-nome" placeholder="como quer aparecer na avaliação">
+            <input type="text" id="av-nome" placeholder="como quer aparecer">
           </div>
-
-          <div class="criterios-grid">
-            <div class="criterio-item">
-              <span class="criterio-label">Desempenho</span>
-              <div class="stars-input" data-criterio="desempenho"></div>
-            </div>
-            <div class="criterio-item">
-              <span class="criterio-label">Custo-benefício</span>
-              <div class="stars-input" data-criterio="custoBeneficio"></div>
-            </div>
-            <div class="criterio-item">
-              <span class="criterio-label">Compatibilidade</span>
-              <div class="stars-input" data-criterio="compatibilidade"></div>
-            </div>
-            <div class="criterio-item">
-              <span class="criterio-label">Durabilidade</span>
-              <div class="stars-input" data-criterio="durabilidade"></div>
-            </div>
-            <div class="criterio-item">
-              <span class="criterio-label">Ruído</span>
-              <div class="stars-input" data-criterio="ruido"></div>
-            </div>
+          <div class="crit-grid">
+            <div class="crit-block" data-c="desempenho"><span class="crit-name">Desempenho</span><div class="stars-row"></div></div>
+            <div class="crit-block" data-c="custoBeneficio"><span class="crit-name">Custo-benefício</span><div class="stars-row"></div></div>
+            <div class="crit-block" data-c="compatibilidade"><span class="crit-name">Compatibilidade</span><div class="stars-row"></div></div>
+            <div class="crit-block" data-c="durabilidade"><span class="crit-name">Durabilidade</span><div class="stars-row"></div></div>
+            <div class="crit-block" data-c="ruido"><span class="crit-name">Ruído</span><div class="stars-row"></div></div>
           </div>
-
-          <div class="form-group" style="margin-top:1.5rem">
-            <label>Comentário (opcional)</label>
+          <div class="field mt">
+            <label>Comentário <em>(opcional)</em></label>
             <textarea id="av-comentario" rows="3" placeholder="o que achou da peça?"></textarea>
           </div>
-
-          <button class="btn-primary" onclick="enviarAvaliacao()">Enviar avaliação</button>
+          <button class="btn-send" onclick="enviarAvaliacao()">Enviar avaliação &#8594;</button>
         </div>
       </div>
     </section>
-
-    <!-- submeter -->
     <section id="view-submeter" class="view">
-      <div class="view-header">
+      <div class="page-title">
         <h1>Submeter peça</h1>
-        <p class="sub">a peça e a foto passam pela aprovação do admin antes de aparecer no catálogo</p>
+        <span class="title-line"></span>
+        <p>passa pelo admin antes de aparecer no catálogo</p>
       </div>
-      <div class="form-card">
-        <div class="form-group">
+      <div class="form-wrap">
+        <div class="field">
           <label>Nome da peça</label>
           <input type="text" id="sub-nome" placeholder="ex: RTX 4070 Ti Super">
         </div>
-        <div class="form-row">
-          <div class="form-group">
+        <div class="field-row">
+          <div class="field">
             <label>Marca</label>
-            <input type="text" id="sub-marca" placeholder="ex: ASUS, Kingston">
+            <input type="text" id="sub-marca" placeholder="ASUS, Kingston...">
           </div>
-          <div class="form-group">
+          <div class="field">
             <label>Categoria</label>
             <select id="sub-categoria">
-              <option>GPU</option>
-              <option>CPU</option>
-              <option>RAM</option>
-              <option>SSD</option>
-              <option>Placa-mãe</option>
-              <option>Fonte</option>
-              <option>Cooler</option>
+              <option>GPU</option><option>CPU</option><option>RAM</option>
+              <option>SSD</option><option>Placa-mãe</option><option>Fonte</option><option>Cooler</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
+        <div class="field">
           <label>Foto da peça</label>
-          <div class="file-drop" id="file-drop" onclick="document.getElementById('sub-foto').click()">
-            <div id="drop-text">clique ou arraste uma imagem aqui</div>
-            <img id="foto-preview" style="display:none">
-            <input type="file" id="sub-foto" accept="image/*" style="display:none" onchange="previewFoto(this)">
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('sub-foto').click()">
+            <div id="drop-inner">
+              <span class="drop-icon">&#8613;</span>
+              <span>clique ou arraste a imagem</span>
+              <small>jpg &middot; png &middot; webp &middot; max 5mb</small>
+            </div>
+            <img id="foto-preview" class="hidden">
+            <input type="file" id="sub-foto" accept="image/*" class="hidden" onchange="previewFoto(this)">
           </div>
-          <p class="hint">a foto precisa ser aprovada pelo admin · max 5mb · jpg, png ou webp</p>
         </div>
-        <div class="form-group">
+        <div class="field">
           <label>Descrição</label>
-          <textarea id="sub-descricao" rows="3" placeholder="especificações, compatibilidade, observações..."></textarea>
+          <textarea id="sub-descricao" rows="3" placeholder="especificações, compatibilidade..."></textarea>
         </div>
-        <button class="btn-primary" onclick="submeterPeca()">Enviar para aprovação</button>
+        <button class="btn-send" onclick="submeterPeca()">Enviar para aprovação &#8594;</button>
       </div>
     </section>
-
-    <!-- admin -->
     <section id="view-admin" class="view">
-      <div class="view-header">
-        <h1>Painel admin</h1>
-        <p class="sub">gerencie peças e fotos submetidas pela comunidade</p>
+      <div class="page-title">
+        <h1>Admin</h1>
+        <span class="title-line"></span>
+        <p>gerencie submissões da comunidade</p>
       </div>
-
-      <div id="admin-auth" class="form-card" style="max-width:400px">
-        <div class="form-group">
+      <div id="admin-login" class="form-wrap" style="max-width:360px">
+        <div class="field">
           <label>Token de acesso</label>
-          <input type="password" id="admin-token" placeholder="token do admin">
+          <input type="password" id="admin-token" placeholder="••••••••">
         </div>
-        <button class="btn-primary" onclick="autenticarAdmin()">Entrar</button>
+        <button class="btn-send" onclick="autenticarAdmin()">Entrar &#8594;</button>
       </div>
-
-      <div id="admin-painel" style="display:none">
-        <div class="admin-tabs">
-          <button class="tab-btn active" onclick="switchTab('pendentes')">Pendentes <span id="count-pendentes" class="badge">0</span></button>
-          <button class="tab-btn" onclick="switchTab('todas')">Todas as peças</button>
+      <div id="admin-painel" class="hidden">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('pendentes', this)">Pendentes <span id="badge-pendentes" class="badge">0</span></button>
+          <button class="tab" onclick="switchTab('todas', this)">Todas as peças</button>
         </div>
-
-        <div id="tab-pendentes" class="tab-content active">
-          <div id="pendentes-list"></div>
-        </div>
-
-        <div id="tab-todas" class="tab-content">
-          <div id="todas-list"></div>
-        </div>
+        <div id="tab-pendentes" class="tab-pane active"><div id="pendentes-list"></div></div>
+        <div id="tab-todas" class="tab-pane"><div id="todas-list"></div></div>
       </div>
     </section>
   </main>
-
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
