@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Peca {
+  id          Int          @id @default(autoincrement())
+  nome        String
+  marca       String
+  categoria   String
+  descricao   String?
+  fotoUrl     String?
+  status      Status       @default(PENDENTE)
+  criadoEm    DateTime     @default(now())
+  avaliacoes  Avaliacao[]
+}
+
+model Avaliacao {
+  id              Int      @id @default(autoincrement())
+  pecaId          Int
+  nomeUsuario     String
+  desempenho      Int      // 1-5
+  custoBeneficio  Int      // 1-5
+  compatibilidade Int      // 1-5
+  durabilidade    Int      // 1-5
+  ruido           Int      // 1-5
+  comentario      String?
+  criadoEm        DateTime @default(now())
+  peca            Peca     @relation(fields: [pecaId], references: [id], onDelete: Cascade)
+}
+
+enum Status {
+  PENDENTE
+  APROVADO
+  REJEITADO
+}
