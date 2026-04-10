@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
   <title>PartRank — Avaliações de Hardware</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -126,6 +127,196 @@
       </div>
     </section>
   </main>
+=======
+  <title>PartScore — Hardware Reviews</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <!-- modal de avaliação -->
+  <div id="modal-overlay" class="modal-overlay hidden" onclick="fecharModal(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modal-produto-nome"></div>
+          <div class="modal-sub">avaliar produto</div>
+        </div>
+        <button class="modal-close" onclick="fecharModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="mfield">
+          <label class="mlabel">Seu nome</label>
+          <input type="text" id="av-nome" class="minput" placeholder="nome que vai aparecer">
+        </div>
+        <div class="mfield">
+          <label class="mlabel">E-mail</label>
+          <input type="email" id="av-email" class="minput" placeholder="seu@email.com">
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Nota geral</label>
+          <div class="big-stars" id="big-stars"></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item" data-crit="qualidade">
+            <span class="detail-label">Qualidade</span>
+            <div class="mini-stars"></div>
+            <span class="detail-val">—</span>
+          </div>
+          <div class="detail-item" data-crit="custo_beneficio">
+            <span class="detail-label">Custo-benefício</span>
+            <div class="mini-stars"></div>
+            <span class="detail-val">—</span>
+          </div>
+          <div class="detail-item" data-crit="desempenho">
+            <span class="detail-label">Desempenho</span>
+            <div class="mini-stars"></div>
+            <span class="detail-val">—</span>
+          </div>
+          <div class="detail-item" data-crit="durabilidade">
+            <span class="detail-label">Durabilidade</span>
+            <div class="mini-stars"></div>
+            <span class="detail-val">—</span>
+          </div>
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Comentário <span class="mopt">opcional</span></label>
+          <textarea id="av-comentario" class="mtextarea" rows="3" placeholder="sua experiência com o produto..."></textarea>
+        </div>
+        <button class="mbtn" onclick="enviarAvaliacao()">Publicar avaliação</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- header -->
+  <header class="header">
+    <div class="header-inner">
+      <a class="logo" href="#" onclick="showView('catalogo')">
+        <div class="logo-icon">▲</div>
+        <div>
+          <div class="logo-name">PartScore</div>
+          <div class="logo-tag">hardware reviews</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="catalogo">Produtos</button>
+        <button class="nav-btn" data-view="submeter">Cadastrar produto</button>
+        <button class="nav-btn" data-view="admin">Painel Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- hero -->
+  <div id="hero" class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Sistema de avaliação</div>
+      <h1 class="hero-title">Avaliações reais<br><em>de hardware.</em></h1>
+      <p class="hero-desc">Notas detalhadas por qualidade, custo-benefício, desempenho e durabilidade — atualizadas em tempo real pela comunidade.</p>
+      <div class="hero-actions">
+        <button class="hero-cta" onclick="document.getElementById('view-catalogo').scrollIntoView({behavior:'smooth'})">Ver catálogo</button>
+      </div>
+    </div>
+    <div class="hero-stat-bar">
+      <div class="hero-stat"><span id="stat-produtos">—</span> produtos</div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><span id="stat-avaliacoes">—</span> avaliações</div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><span id="stat-categorias">—</span> categorias</div>
+    </div>
+  </div>
+
+  <main class="main">
+
+    <!-- catálogo -->
+    <section id="view-catalogo" class="view active">
+      <div class="section-header">
+        <div class="section-title-row">
+          <h2 class="section-title">Catálogo</h2>
+          <div id="filtros" class="filtros"></div>
+        </div>
+      </div>
+      <div id="catalogo-grid" class="catalog-grid"></div>
+    </section>
+
+    <!-- submeter -->
+    <section id="view-submeter" class="view">
+      <div class="split-layout">
+        <div class="split-info">
+          <div class="split-eyebrow">Contribua</div>
+          <h2 class="split-title">Cadastrar produto</h2>
+          <p class="split-desc">Submeta um produto para o catálogo. Nossa equipe revisa a listagem e a foto antes de publicar.</p>
+          <div class="split-note">
+            <div class="note-dot"></div>
+            Foto e dados passam por aprovação manual
+          </div>
+        </div>
+        <div class="form-panel">
+          <div class="fp-field">
+            <label class="fp-label">Nome do produto</label>
+            <input type="text" id="sub-nome" class="fp-input" placeholder="ex: RTX 4070 Ti Super">
+          </div>
+          <div class="fp-row">
+            <div class="fp-field">
+              <label class="fp-label">Preço (R$)</label>
+              <input type="number" id="sub-preco" class="fp-input" placeholder="0,00" step="0.01" min="0">
+            </div>
+            <div class="fp-field">
+              <label class="fp-label">Categoria</label>
+              <select id="sub-categoria" class="fp-select"></select>
+            </div>
+          </div>
+          <div class="fp-field">
+            <label class="fp-label">Loja</label>
+            <select id="sub-loja" class="fp-select"></select>
+          </div>
+          <div class="fp-field">
+            <label class="fp-label">Foto do produto <span class="fp-opt">max 5mb</span></label>
+            <div class="fp-upload" id="fp-upload" onclick="document.getElementById('sub-foto').click()">
+              <span class="fp-upload-icon">↑</span>
+              <span id="fp-upload-text">clique para selecionar imagem</span>
+              <img id="fp-preview" class="hidden" style="max-height:120px;border-radius:2px;margin-top:8px">
+              <input type="file" id="sub-foto" accept="image/*" class="hidden" onchange="previewFoto(this)">
+            </div>
+          </div>
+          <button class="fp-btn" onclick="submeterProduto()">Enviar para aprovação →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- admin -->
+    <section id="view-admin" class="view">
+      <div class="section-header">
+        <h2 class="section-title">Painel Admin</h2>
+      </div>
+      <div id="admin-login" style="max-width:360px">
+        <div class="fp-field">
+          <label class="fp-label">Token de acesso</label>
+          <input type="password" id="admin-token" class="fp-input" placeholder="••••••••">
+        </div>
+        <button class="fp-btn" onclick="autenticarAdmin()" style="margin-top:4px">Entrar →</button>
+      </div>
+      <div id="admin-painel" class="hidden">
+        <div class="admin-tabs">
+          <button class="atab active" onclick="switchAdminTab('pendentes',this)">Pendentes <span id="badge-pend" class="atab-badge">0</span></button>
+          <button class="atab" onclick="switchAdminTab('todos',this)">Todos os produtos</button>
+        </div>
+        <div id="atab-pendentes" class="atab-pane active"><div id="pendentes-list"></div></div>
+        <div id="atab-todos" class="atab-pane hidden"><div id="todos-list"></div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">PartScore</div>
+      <div class="footer-copy">Sistema de avaliação de hardware · trabalho acadêmico CEUB</div>
+    </div>
+  </footer>
+
+>>>>>>> 0a406f2 (melhoria e implementação do mer novo)
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>

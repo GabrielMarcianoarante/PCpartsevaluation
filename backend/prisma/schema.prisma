@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+<<<<<<< HEAD
 model Peca {
   id          Int          @id @default(autoincrement())
   nome        String
@@ -31,6 +32,83 @@ model Avaliacao {
   comentario      String?
   criadoEm        DateTime @default(now())
   peca            Peca     @relation(fields: [pecaId], references: [id], onDelete: Cascade)
+=======
+model Cliente {
+  cd_cliente  Int          @id @default(autoincrement())
+  cpf         String       @unique
+  nome        String
+  telefone    String?
+  email       String       @unique
+  pedidos     Pedido[]
+  avaliacoes  Avaliacao[]
+}
+
+model Categoria {
+  cd_categoria Int       @id @default(autoincrement())
+  nome         String
+  produtos     Produto[]
+}
+
+model Loja {
+  cd_cnpj  String    @id
+  nome     String
+  produtos Produto[]
+}
+
+model Produto {
+  cd_produto   Int        @id @default(autoincrement())
+  nome         String
+  vl_produto   Decimal    @db.Decimal(10, 2)
+  fotoUrl      String?
+  status       Status     @default(PENDENTE)
+  cd_categoria Int
+  cd_cnpj      String
+  categoria    Categoria  @relation(fields: [cd_categoria], references: [cd_categoria])
+  loja         Loja       @relation(fields: [cd_cnpj], references: [cd_cnpj])
+  itensPedido  ItemPedido[]
+  avaliacoes   Avaliacao[]
+}
+
+model Pedido {
+  cd_pedido  Int          @id @default(autoincrement())
+  vl_total   Decimal      @db.Decimal(10, 2)
+  dt_venda   DateTime     @default(now())
+  cd_cliente Int
+  cliente    Cliente      @relation(fields: [cd_cliente], references: [cd_cliente])
+  itens      ItemPedido[]
+}
+
+model ItemPedido {
+  cd_item       Int     @id @default(autoincrement())
+  cd_pedido     Int
+  cd_produto    Int
+  quantidade    Int
+  valor_unitario Decimal @db.Decimal(10, 2)
+  pedido        Pedido  @relation(fields: [cd_pedido], references: [cd_pedido])
+  produto       Produto @relation(fields: [cd_produto], references: [cd_produto])
+}
+
+model Avaliacao {
+  cd_avaliacao Int                @id @default(autoincrement())
+  nota         Int
+  comentario   String?
+  data         DateTime           @default(now())
+  cd_cliente   Int
+  cd_produto   Int
+  cliente      Cliente            @relation(fields: [cd_cliente], references: [cd_cliente])
+  produto      Produto            @relation(fields: [cd_produto], references: [cd_produto])
+  detalhe      AvaliacaoDetalhada?
+}
+
+model AvaliacaoDetalhada {
+  cd_detalhe      Int       @id @default(autoincrement())
+  cd_avaliacao    Int       @unique
+  qualidade       Int
+  custo_beneficio Int
+  desempenho      Int
+  durabilidade    Int
+  avaliacao       Avaliacao @relation(fields: [cd_avaliacao], references: [cd_avaliacao], onDelete: Cascade)
+>>>>>>> 0a406f2 (melhoria e implementação do mer novo)
 }
 
 enum Status {
